@@ -3,20 +3,20 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'font-awesome/css/font-awesome.css'
-import './static/css/animate.css'
-import 'inspinia/dist/inspinia.css'
-import 'inspinia/dist/fonts.css'
-import iView from 'iview'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import store from './store/store'
-import 'iview/dist/styles/iview.css'
-import axios from 'axios'
-Vue.use(iView);
+import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui'
+import './icons'
+import './styles/index.scss'
+import axios from 'http'
+Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 //挂载原型上
 Vue.prototype.$axios = axios;
+
+
 
 /* eslint-disable no-new */
 new Vue({
