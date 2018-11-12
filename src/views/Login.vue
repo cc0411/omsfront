@@ -1,28 +1,29 @@
 <template>
   <div class="login-container">
 
-
-        <el-form ref="LoginForm" :model="LoginUser" :rules="rules" label-width="80px" class="login-form" auto-complete="on"  label-position="left">
-
+          <el-form ref="LoginForm" :model="LoginUser" :rules="rules" class="login-form" auto-complete="on" label-position="left">
           <div class="title-container">
             <h3 class="title">Welcome to OMS</h3>
-            <lang-select class="set-language"/>
           </div>
-          <el-form-item label="用户名" prop="username" >
+            <el-form-item prop="username">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+              <el-input
+                v-model="LoginUser.username"
+                placeholder="请输入用户名"
+              />
+            </el-form-item>
+
+          <el-form-item  prop="password" >
             <span class="svg-vontainer">
-              <svg-icon icon-class="user"/>
-            </span>
-            <el-input v-model="LoginUser.username" placeholder="请输入用户名" ></el-input>
-          </el-form-item>
-          <span class="svg-vontainer">
               <svg-icon icon-class="password"/>
             </span>
-          <el-form-item label="密码" prop="password" >
-            <el-input v-model="LoginUser.password" placeholder="请输入密码" type="password" ></el-input>
+            <el-input v-model="LoginUser.password" placeholder="请输入密码" type="password"></el-input>
           </el-form-item>
-          <el-form-item >
-            <el-button type="primary" @click="handleSubmit('LoginForm')">登录</el-button>
-          </el-form-item>
+
+            <el-button  type="primary" style="width:100%;margin-bottom:30px;" @click="handleSubmit('LoginForm')">登录</el-button>
+
         </el-form>
 
   </div>

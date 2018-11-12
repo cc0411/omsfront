@@ -34,13 +34,13 @@ const router = new Router({
 
 
 // 添加路由守卫
-// router.beforeEach((to, from, next) => {
-//   const isLogin = localStorage.token ? true : false;
-//   if (to.path == "/login" ) {
-//     next();
-//   } else {
-//     isLogin ? next() : next("/login");
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const isLogin = localStorage.token ? true : false;
+  if (to.path == "/login" ) {
+    next();
+  } else {
+    isLogin ? next() : next("/login");
+  }
+})
 
 export default router;

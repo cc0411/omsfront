@@ -13,3 +13,4 @@ export default {
     }
     console.log(state.userInfo);
   },}
+

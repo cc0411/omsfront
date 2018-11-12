@@ -1,6 +1,6 @@
 <template>
     <div class="nofind">
-      <!--<img src="../static/image/404.gif" alt="">-->
+      <img src="../../static/image/404.gif" alt="">
     </div>
 </template>
 
