@@ -1,49 +1,43 @@
 <template>
-  <header class="head-nav">
-    <el-row>
-      <el-col :span="6" class='logo-container'>
-        <img src="" class='logo' alt="">
-        <span class='title'>oms运维管理系统</span>
-      </el-col>
-      <el-col :span='6' class="user">
-        <div class="userinfo">
-          <img src="" class='avatar' alt="">
-          <div class='welcome'>
-            <p class='name comename'>欢迎</p>
-            <p class='name avatarname'>{{userInfo.name}}</p>
-          </div>
-          <span class='username'>
-                        <el-dropdown
-                          trigger="click"
-                          @command='setDialogInfo'>
-                            <span class="el-dropdown-link">
-                                <i class="el-icon-caret-bottom el-icon--right"></i>
-                            </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command='info'>个人信息</el-dropdown-item>
-                                <el-dropdown-item  command='logout'>退出</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                     </span>
-        </div>
-      </el-col>
+  <div class="header">
+    <!-- 折叠按钮 -->
+    <div class="collapse-btn" @click="collapseChage">
+      <i class="el-icon-menu"></i>
+    </div>
+    <div class="logo">oms后台管理系统</div>
+    <div class="header-right">
+      <div class="header-user-con">
+        <!-- 用户头像 -->
+        <div class="user-avator"><img src=""></div>
+        <!-- 用户名下拉菜单 -->
+        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                    <span class="el-dropdown-link">
+                        {{userInfo.name}} <i class="el-icon-caret-bottom"></i>
+                    </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item divided  command="showInfoList">个人中心</el-dropdown-item>
+            <el-dropdown-item divided  command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </div>
+  </div>
 
-    </el-row>
-
-  </header>
 </template>
 
 <script>
+  import bus from './bus';
   import { mapGetters } from 'vuex';
     export default {
-        name: "HeadNav",
+      name: "HeadNav",
       computed: {
         ...mapGetters({
           userInfo:'userInfo'
         })
       },
-      methods: {
-        setDialogInfo(cmditem) {
+      methods:{
+        // 用户名下拉菜单选择事件
+        handleCommand(cmditem) {
           if (!cmditem) {
             this.$message("菜单选项缺少command属性");
             return;
@@ -68,77 +62,99 @@
           localStorage.removeItem("name");
           this.$store.dispatch('setInfo');
 
-          // 页面跳转
-          this.$router.push("/login");
+            // 页面跳转
+            this.$router.push("/login");
+          },
+
+        // 侧边栏折叠
+        collapseChage(){
+          this.collapse = !this.collapse;
+          bus.$emit('collapse', this.collapse);
+        },
+      },
+      mounted(){
+        if(document.body.clientWidth < 1500){
+          this.collapseChage();
         }
       }
-    };
+      }
+
+
 
 </script>
 
 <style scoped>
-  .head-nav {
+  .header {
+    position: relative;
+    box-sizing: border-box;
     width: 100%;
-    height: 60px;
-    min-width: 600px;
-    padding: 5px;
-    background: #324057;
-    color: #fff;
-    border-bottom: 1px solid #1f2d3d;
-  }
-  .logo-container {
-    line-height: 60px;
-    min-width: 400px;
-  }
-  .logo {
-    height: 50px;
-    width: 50px;
-    margin-right: 5px;
-    vertical-align: middle;
-    display: inline-block;
-  }
-  .title {
-    vertical-align: middle;
+    height: 70px;
     font-size: 22px;
-    font-family: "Microsoft YaHei";
-    letter-spacing: 3px;
-  }
-  .user {
-    line-height: 60px;
-    text-align: right;
-    float: right;
-    padding-right: 10px;
-  }
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    vertical-align: middle;
-    display: inline-block;
-  }
-  .welcome {
-    display: inline-block;
-    width: auto;
-    vertical-align: middle;
-    padding: 0 5px;
-  }
-  .name {
-    line-height: 20px;
-    text-align: center;
-    font-size: 14px;
-  }
-  .comename {
-    font-size: 12px;
-  }
-  .avatarname {
-    color: #409eff;
-    font-weight: bolder;
-  }
-  .username {
-    cursor: pointer;
-    margin-right: 5px;
-  }
-  .el-dropdown {
     color: #fff;
+  }
+  .collapse-btn{
+    float: left;
+    padding: 0 21px;
+    cursor: pointer;
+    line-height: 70px;
+  }
+  .header .logo{
+    float: left;
+    width:250px;
+    line-height: 70px;
+  }
+  .header-right{
+    float: right;
+    padding-right: 50px;
+  }
+  .header-user-con{
+    display: flex;
+    height: 70px;
+    align-items: center;
+  }
+  .btn-fullscreen{
+    transform: rotate(45deg);
+    margin-right: 5px;
+    font-size: 24px;
+  }
+  .btn-bell, .btn-fullscreen{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  .btn-bell-badge{
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #f56c6c;
+    color: #fff;
+  }
+  .btn-bell .el-icon-bell{
+    color: #fff;
+  }
+  .user-name{
+    margin-left: 10px;
+  }
+  .user-avator{
+    margin-left: 20px;
+  }
+  .user-avator img{
+    display: block;
+    width:40px;
+    height:40px;
+    border-radius: 50%;
+  }
+  .el-dropdown-link{
+    color: #fff;
+    cursor: pointer;
+  }
+  .el-dropdown-menu__item{
+    text-align: center;
   }
 </style>

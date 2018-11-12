@@ -3,12 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+// import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import store from './store/store'
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui'
 import './icons'
-import './styles/index.scss'
+import 'font-awesome/css/font-awesome.min.css'
+import '../static/css/icon.css';
+// import './styles/index.scss'
 import axios from 'http'
 Vue.use(ElementUI);
 
