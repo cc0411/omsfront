@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Index from '@/views/Index'
 import Nofind from '@/views/404'
+import Hosts from '@/views/Hosts'
 import Layout from '@/components/Layout'
 Vue.use(Router)
 import store from '../store/store'
@@ -19,9 +20,14 @@ const router = new Router({
       title:'layout',
       children:[
         {
-          path: '/Index',
+          path: '/index',
           component: Index,
           title: '系统首页'
+        },
+        {
+          path: '/hosts',
+          component: Hosts,
+          title: '主机管理'
         },
 
       ]

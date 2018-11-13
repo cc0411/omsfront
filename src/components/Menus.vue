@@ -50,7 +50,7 @@ name: 'Menus',
           title: '资产管理',
           subs: [
             {
-              index: 'asset',
+              index: 'hosts',
               title: '主机管理'
             },
             {
