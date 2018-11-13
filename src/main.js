@@ -11,12 +11,9 @@ import './icons'
 import 'font-awesome/css/font-awesome.min.css'
 import './icon/iconfont.css'
 // import './styles/index.scss'
-import axios from 'http'
 Vue.use(ElementUI);
-
 Vue.config.productionTip = false;
-//挂载原型上
-Vue.prototype.$axios = axios;
+
 
 
 

@@ -32,31 +32,14 @@
 </template>
 
 <script>
-  import {getUserDetail, updateUserInfo} from '../api/api'
 export default {
 name: 'Index',
-  data () {
-    return {
-      userInfo: {
-        name: '',
-        email: '',
-        phone: '',
-      }
-    };
+  props:{
+    userInfo:{
+      required:true,
+      type:Object,
+    }
   },
-  created(){
-  this.getUserInfo()
-  },
-methods:{
-  getUserInfo () { //请求用户信息
-    getUserDetail().then((response)=> {
-      this.userInfo = response.data;
-
-    }).catch(function (error) {
-      console.log(error);
-    });
-  },
-}
 
 }
 </script>

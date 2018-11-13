@@ -8,7 +8,7 @@
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户头像 -->
-        <div class="user-avator"><img src=""></div>
+        <div class="user-avator"><img :src="userInfo.image"></div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
@@ -27,13 +27,13 @@
 
 <script>
   import bus from './bus';
-  import { mapGetters } from 'vuex';
     export default {
       name: "HeadNav",
-      computed: {
-        ...mapGetters({
-          userInfo:'userInfo'
-        })
+      props:{
+        userInfo:{
+          required:true,
+          type:Object,
+        }
       },
       methods:{
         // 用户名下拉菜单选择事件

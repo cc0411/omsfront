@@ -20,8 +20,6 @@ function endLoading() {    //使用Element loading-close 方法
 //request拦截器，判断store中是否有token  存在再每个header上加token
 axios.interceptors.request.use(config=> {
   startLoading()
-  console.log(111111)
-  console.log(store.state.userInfo)
   if (store.state.userInfo.token) {
     config.headers.Authorization = `JWT ${store.state.userInfo.token}`;
   }

@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
-    <app-header></app-header>
+    <app-header :userInfo="userInfo"></app-header>
     <app-menus></app-menus>
     <div class="content-box" :class="{'content-collapse':collapse}">
       <app-tags></app-tags>
       <div class="content">
         <transition name="move" mode="out-in">
           <keep-alive :include="tagsList">
-            <router-view></router-view>
+            <router-view :userInfo="userInfo"></router-view>
           </keep-alive>
         </transition>
       <app-footer></app-footer>
@@ -22,6 +22,7 @@ import  Menus from '../components/Menus'
 import  Tags from '../components/Tags'
 import  Footer from '../components/Footer'
 import bus from '../components/bus';
+import {getUserDetail, updateUserInfo} from '../api/api'
 export default {
 
 
@@ -29,7 +30,11 @@ name: 'Layout',
   data(){
     return {
       tagsList: [],
-      collapse: false
+      collapse: false,
+      userInfo: {
+        name: '',
+        image:'',
+      }
     }
   },
  components:{
@@ -38,7 +43,9 @@ name: 'Layout',
    'app-tags':Tags,
    'app-footer':Footer
  },
+
   created(){
+    this.getUserInfo(),
     bus.$on('collapse', msg => {
       this.collapse = msg;
     })
@@ -50,6 +57,16 @@ name: 'Layout',
       }
       this.tagsList = arr;
     })
+  },
+  methods:{
+    getUserInfo () { //请求用户信息
+      getUserDetail().then((response)=> {
+        this.userInfo = response.data;
+
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
   }
 }
 </script>

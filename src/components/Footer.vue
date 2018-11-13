@@ -1,15 +1,22 @@
 <template>
   <div class="footer">
     <div>
-      <strong>Copyright</strong> Example Company © 2014-2018
+      <strong>Copyright</strong> {{msg}}
     </div>
   </div>
 </template>
 
 <script>
     export default {
-        name: "Footer"
+      name: "Footer",
+      data() {
+        return {
+          msg: 'oms运维管理系统@2017-2018',
+
+        }
+      },
     }
+
 </script>
 
 <style scoped>
