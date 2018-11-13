@@ -20,6 +20,8 @@ function endLoading() {    //使用Element loading-close 方法
 //request拦截器，判断store中是否有token  存在再每个header上加token
 axios.interceptors.request.use(config=> {
   startLoading()
+  console.log(111111)
+  console.log(store.state.userInfo)
   if (store.state.userInfo.token) {
     config.headers.Authorization = `JWT ${store.state.userInfo.token}`;
   }
@@ -45,10 +47,16 @@ axios.interceptors.response.use(
         localStorage.removeItem('name')
         // 页面跳转
         router.push('/login')
+      case 400:
+        Message.error('账号密码错误')
+      case  403:
+        Message.error("您没有权限访问")
+
+
     }
   }
     return Promise.reject(error)
   })
 
-
-// export default axios
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+export default axios

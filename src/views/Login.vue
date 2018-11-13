@@ -16,7 +16,7 @@
             </el-form-item>
 
           <el-form-item  prop="password" >
-            <span class="svg-vontainer">
+            <span class="svg-container">
               <svg-icon icon-class="password"/>
             </span>
             <el-input v-model="LoginUser.password" placeholder="请输入密码" type="password"></el-input>
@@ -58,17 +58,17 @@ name: 'login',
 
       this.$refs[Formname].validate((valid) => {
         if (valid) {
-          Login({username:this.LoginUser.username,password:this.LoginUser.password})
+          Login(this.LoginUser)
             .then(res=>{
             //存入本地存储
             localStorage.setItem("name", this.LoginUser.username)
             localStorage.setItem("token", res.data.token)
             // 存储数据到store
-            this.$store.dispatch("setInfo")
+            // this.$store.dispatch("setInfo")
+              this.$store.dispatch("login")
             //消息提醒并跳转首页
             this.$message.success("登陆成功");
             this.$router.push("/index")
-
           })
         } else {
             this.$message.error('账号密码错误')

@@ -1,56 +1,69 @@
 <template>
-  <div class="wrapper">
-    <app-header></app-header>
-    <app-menus></app-menus>
-    <div class="content-box" :class="{'content-collapse':collapse}">
-      <app-tags></app-tags>
-      <div class="content">
-        <transition name="move" mode="out-in">
-          <keep-alive :include="tagsList">
-            <router-view></router-view>
-          </keep-alive>
-        </transition>
-      </div>
+  <div>
+    <div class="wrapper wrapper-content">
+          <el-row>
+          <el-col>
+          <div class="text-center ">
+            <br>
+            <br>
+            <h3 class="font-bold">欢迎您，{{userInfo.name}}</h3>
+            <div class="">
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <div style="position:relative">
+                <div style="position:absolute;width:100%;height:100%;left:0px;top:0px;background:#000;filter:alpha(opacity=0);opacity:0"></div>
+                <iframe allowtransparency="true" scrolling="no" src="//tianqi.2345.com/plugin/widget/index.htm?s=2&amp;z=3&amp;t=0&amp;v=0&amp;d=3&amp;bd=0&amp;k=&amp;f=&amp;q=1&amp;e=0&amp;a=0&amp;c=54511&amp;w=385&amp;h=96&amp;align=left" width="385" height="96" frameborder="0"></iframe>
+              </div>
+
+            </div>
+          </div>
+          </el-col>
+          </el-row>
     </div>
+
   </div>
 </template>
 
 <script>
-import  HeadNav from '../components/HeadNav'
-import  Menus from '../components/Menus'
-import  Tags from '../components/Tags'
-import bus from '../components/bus';
+  import {getUserDetail, updateUserInfo} from '../api/api'
 export default {
-
-
 name: 'Index',
-  data(){
+  data () {
     return {
-      tagsList: [],
-      collapse: false
-    }
-  },
- components:{
-  'app-header':HeadNav,
-   'app-menus':Menus,
-   'app-tags':Tags
- },
-  created(){
-    bus.$on('collapse', msg => {
-      this.collapse = msg;
-    })
-    // 只有在标签页列表里的页面才使用keep-alive，即关闭标签之后就不保存到内存中了。
-    bus.$on('tags', msg => {
-      let arr = [];
-      for(let i = 0, len = msg.length; i < len; i ++){
-        msg[i].name && arr.push(msg[i].name);
+      userInfo: {
+        name: '',
+        email: '',
+        phone: '',
       }
-      this.tagsList = arr;
-    })
-  }
+    };
+  },
+  created(){
+  this.getUserInfo()
+  },
+methods:{
+  getUserInfo () { //请求用户信息
+    getUserDetail().then((response)=> {
+      this.userInfo = response.data;
+
+    }).catch(function (error) {
+      console.log(error);
+    });
+  },
+}
+
 }
 </script>
 
 <style scoped>
 
+  .text-center {
+    text-align: center;
+  }
 </style>

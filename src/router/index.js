@@ -3,8 +3,9 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Index from '@/views/Index'
 import Nofind from '@/views/404'
+import Layout from '@/components/Layout'
 Vue.use(Router)
-
+import store from '../store/store'
 const router = new Router({
   routes: [
     {
@@ -13,10 +14,19 @@ const router = new Router({
     },
 
     {
-      path: '/index',
-      name: 'Index',
-      component: Index
+      path: '/',
+      component:Layout,
+      title:'layout',
+      children:[
+        {
+          path: '/Index',
+          component: Index,
+          title: '系统首页'
+        },
+
+      ]
     },
+
     {
       path:'/login',
       name:'Login',
@@ -28,6 +38,7 @@ const router = new Router({
       component:Nofind
     }
 
+
   ],
   mode:'history'
 })
@@ -35,7 +46,7 @@ const router = new Router({
 
 // 添加路由守卫
 router.beforeEach((to, from, next) => {
-  const isLogin = localStorage.token ? true : false;
+  const isLogin = store.state.userInfo.token ? true : false;
   if (to.path == "/login" ) {
     next();
   } else {

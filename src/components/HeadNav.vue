@@ -60,7 +60,7 @@
           // 清除token
           localStorage.removeItem("token");
           localStorage.removeItem("name");
-          this.$store.dispatch('setInfo');
+          this.$store.dispatch('logout');
 
             // 页面跳转
             this.$router.push("/login");

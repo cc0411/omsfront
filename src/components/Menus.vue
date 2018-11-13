@@ -40,79 +40,49 @@ name: 'Menus',
       collapse: false,
       items: [
         {
-          icon: 'el-icon-lx-home',
+          icon: 'el-icon-cl-yibiaopan',
           index: 'index',
-          title: '系统首页'
+          title: 'Dashboard'
         },
         {
-          icon: 'el-icon-lx-cascades',
-          index: 'table',
-          title: '基础表格'
-        },
-        {
-          icon: 'el-icon-lx-copy',
-          index: 'tabs',
-          title: 'tab选项卡'
-        },
-        {
-          icon: 'el-icon-lx-calendar',
-          index: '3',
-          title: '表单相关',
+          icon: 'el-icon-cl-shebeiguanli',
+          index: '1',
+          title: '资产管理',
           subs: [
             {
-              index: 'form',
-              title: '基本表单'
+              index: 'asset',
+              title: '主机管理'
             },
             {
-              index: '3-2',
-              title: '三级菜单',
-              subs: [
-                {
-                  index: 'editor',
-                  title: '富文本编辑器'
-                },
-                {
-                  index: 'markdown',
-                  title: 'markdown编辑器'
-                },
-              ]
+              index: 'idc',
+              title: '机房管理'
             },
             {
-              index: 'upload',
-              title: '文件上传'
-            }
+              index: 'tag',
+              title: '角色管理'
+            },
           ]
-        },
-        {
-          icon: 'el-icon-lx-emoji',
-          index: 'icon',
-          title: '自定义图标'
-        },
-        {
-          icon: 'el-icon-lx-favor',
-          index: 'charts',
-          title: 'schart图表'
-        },
-        {
-          icon: 'el-icon-rank',
-          index: 'drag',
-          title: '拖拽列表'
         },
         {
           icon: 'el-icon-lx-warn',
-          index: '6',
-          title: '错误处理',
+          index: '2',
+          title: 'Salt',
           subs: [
             {
-              index: 'permission',
-              title: '权限测试'
+              index: 'minion',
+              title: 'minion列表'
             },
             {
-              index: 'nofind',
-              title: '404页面'
+              index: 'saltkey',
+              title: 'saltKey列表'
             }
           ]
-        }
+        },
+        {
+          icon: 'el-icon-cl-quanxianshenpi',
+          index: 'admin',
+          title: '后台管理'
+        },
       ]
     }
   },

@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui'
 import './icons'
 import 'font-awesome/css/font-awesome.min.css'
-import '../static/css/icon.css';
+import './icon/iconfont.css'
 // import './styles/index.scss'
 import axios from 'http'
 Vue.use(ElementUI);
