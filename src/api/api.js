@@ -13,13 +13,15 @@ export const updateUserInfo = params => { return axios.patch(`${host}/api/users/
 
 
 //添加主机
-export const addHosts = params => {return axios.post(`${host}/assets/`, params)}
+export const addHosts = params => {return axios.post(`${host}/api/assets/`, params)}
 
-//删除主机
-export const delHosts = addressId => {return axios.delete(`${host}/assets/`+assetsId+'/')}
+//删除主机api/
+export const delHosts = addressId => {return axios.delete(`${host}/api/assets/`+assetsId+'/')}
 
 //修改主机信息
-export const updateHosts = (addressId, params) => {return axios.patch(`${host}/assets/`+assetsId+'/', params)}
+export const updateHosts = (addressId, params) => {return axios.patch(`${host}/api/assets/`+assetsId+'/', params)}
 
 //获取主机列表
-export const getHosts = () => {return axios.get(`${host}/assets/`)}
+ export const getHosts = () => {return axios.get(`${host}/api/assets/`, params)}
+
+
