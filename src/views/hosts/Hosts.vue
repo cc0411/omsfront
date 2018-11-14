@@ -9,10 +9,18 @@
         <div class="handle-box">
           <el-button type="danger"  round @click="delAll">批量删除</el-button>
           <el-button type="success" round  @click="AddHost">添加主机</el-button>
-          <el-radio-group v-model="listQuery.status"   @change="changeStatus"  class="handle-select mr10">
-            <el-radio  label="online"  >上线</el-radio>
-            <el-radio  label="offline" >下线</el-radio>
-          </el-radio-group>
+          <el-select v-model="listQuery.status"   @change="changeStatus" placeholder="请选择" class="handle-select mr10">
+            <el-option label="上线" value="online">
+            </el-option>
+            <el-option label="下线" value="offline">
+            </el-option>
+          </el-select>
+          <el-select v-model="listQuery.server_type"   @change="changeServerType" placeholder="请选择" class="handle-select mr10">
+              <el-option label="物理机"  value="physical"></el-option>
+            <el-option label="虚拟机" value="virtual"></el-option>
+            <el-option label="云主机" value="instance"></el-option>
+          </el-select>
+
           <div class="search">
             <el-input v-model="searchdata" placeholder="搜索关键词" class="handle-input mr10"></el-input>
             <el-button type="primary" icon="search" @click="searchClick">搜索</el-button>
@@ -50,10 +58,14 @@
               label="机房"
               width="150">
             </el-table-column>
-            <el-table-column
-              prop="server_type"
-              label="服务器类型"
-              width="150">
+            <el-table-column prop='server_type' label='类型'>
+              <template slot-scope="scope">
+                <div slot="reference" class="name-wrapper" style="text-align: center">
+                  <el-tag style="color: #000" :color="ASSET_TYPE[scope.row.server_type].color">
+                    {{ASSET_TYPE[scope.row.server_type].type}}
+                  </el-tag>
+                </div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="os"
@@ -66,12 +78,16 @@
               sortable
               width="150">
             </el-table-column>
-            <el-table-column
-              prop="status"
-              label="状态"
-              sortable
-              width="120">
+            <el-table-column prop='status' label='状态'>
+              <template slot-scope="scope">
+                <div slot="reference" class="name-wrapper" style="text-align: center">
+                  <el-tag :type="ASSET_STATUS[scope.row.status].type">
+                    {{ASSET_STATUS[scope.row.status].status}}
+                  </el-tag>
+                </div>
+              </template>
             </el-table-column>
+
             <el-table-column
               prop ="ctime"
               label="创建时间"
@@ -100,7 +116,7 @@
 </template>
 
 <script>
-  import {getHosts} from '../../api/api'
+  import { getHosts } from '../../api/api'
     export default {
         name: "Hosts",
       created() {
@@ -121,18 +137,29 @@
               page:this.page,
               page_size :'',
               search:'',
-              status:'online'
+              status:'',
+              server_type:'',
             },
-            ASSET_TYPE:{
+            // ASSET_TYPE:[
+            //   {'type':'physical', 'display': '物理机', 'color': '#c0dbff' },
+            //   {'type':'virtual', 'display': '虚拟机', 'color': '#19ddff' },
+            //   {'type':'instance', 'display': '云主机', 'color': '#f06292' },
+            // ],
+            // ASSET_STATUS: [
+            //     {'status':'online',  'display': '上线'},
+            //     { 'status':'offline',  'display': '下线'},
+            // ],
+            ASSET_TYPE: {
               'physical': { 'type': '物理机', 'color': '#c0dbff' },
               'virtual': { 'type': '虚拟机', 'color': '#19ddff' },
               'instance': { 'type': '云主机', 'color': '#f06292' },
+
             },
             ASSET_STATUS: {
               'online': { 'status': '上线', 'type': 'primary' },
-              'offline': { 'status': '下线', 'type': 'error' },
-            },
+              'offline': { 'status': '下线', 'type': 'info' },
 
+            },
 
 
           }
@@ -152,8 +179,8 @@
         handleSelectionChange(val) {
           this.multipleSelection = val;
         },
-          //批量删除主机
-          delAll(){
+        //批量删除主机
+        delAll(){
 
 
           },
@@ -168,6 +195,10 @@
         },
         changeStatus(val){
           this.listQuery.status = val
+          this.gethostInfo()
+        },
+        changeServerType(val){
+          this.listQuery.server_type = val
           this.gethostInfo()
         },
         handleCurrentChange(val) {

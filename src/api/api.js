@@ -13,15 +13,69 @@ export const updateUserInfo = params => { return axios.patch(`${host}/api/users/
 
 
 //添加主机
-export const addHosts = params => {return axios.post(`${host}/api/assets/`, params)}
+export function addHost(params) {
+  return axios({
+    url:`${host}/api/assets/`,
+    method:'post',
+    params
+  })
 
+}
 //删除主机api/
-export const delHosts = addressId => {return axios.delete(`${host}/api/assets/`+assetsId+'/')}
+export function delHost(id)  {
+  return axios({
+    url:`${host}/api/assets/`+assetsId+'/',
+    method:'delete',
+    })
+}
 
 //修改主机信息
-export const updateHosts = (addressId, params) => {return axios.patch(`${host}/api/assets/`+assetsId+'/', params)}
+export function updateHost(id, params) {
+  return axios({
+    url: `${host}/api/assets/` + assetsId + '/',
+    method:'putch',
+    params
+  })
+}
 
-//获取主机列表
- export const getHosts = () => {return axios.get(`${host}/api/assets/`, params)}
+//获取主机列表信息
+export function getHosts(params) {
+  return axios({
+    url: `${host}/api/assets/`,
+    method: 'get',
+    params
+  })
+}
 
 
+
+export function addIdc(data) {
+  return axios({
+    url: `${host}/api/idc/`,
+    method: 'post',
+    data
+  })
+}
+
+export function getIdcs(query) {
+  return axios({
+    url: `${host}/api/idc/`,
+    method: 'get',
+    params: query
+  })
+}
+
+export function putIdc(id, data) {
+  return axios({
+    url: `${host}/api/idc/` + id + '/',
+    method: 'put',
+    data
+  })
+}
+
+export function deleteIdc(id) {
+  return axios({
+    url: `${host}/api/idc/` + id + '/',
+    method: 'delete'
+  })
+}
