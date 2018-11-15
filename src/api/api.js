@@ -24,7 +24,7 @@ export function addHost(params) {
 //删除主机api/
 export function delHost(id)  {
   return axios({
-    url:`${host}/api/assets/`+assetsId+'/',
+    url:`${host}/api/assets/`+id+'/',
     method:'delete',
     })
 }
@@ -32,7 +32,7 @@ export function delHost(id)  {
 //修改主机信息
 export function updateHost(id, params) {
   return axios({
-    url: `${host}/api/assets/` + assetsId + '/',
+    url: `${host}/api/assets/` + id + '/',
     method:'putch',
     params
   })
@@ -56,14 +56,8 @@ export function addIdc(data) {
     data
   })
 }
-
-export function getIdcs(query) {
-  return axios({
-    url: `${host}/api/idc/`,
-    method: 'get',
-    params: query
-  })
-}
+//获取机房信息
+export const getIdcs = () => { return axios.get(`${host}/api/idc/`) }
 
 export function putIdc(id, data) {
   return axios({
@@ -76,6 +70,32 @@ export function putIdc(id, data) {
 export function deleteIdc(id) {
   return axios({
     url: `${host}/api/idc/` + id + '/',
+    method: 'delete'
+  })
+}
+
+
+export function addRole(data) {
+  return axios({
+    url: `${host}/api/role/`,
+    method: 'post',
+    data
+  })
+}
+//获取角色信息
+export const getIRoles = () => { return axios.get(`${host}/api/role/`) }
+
+export function putRole(id, data) {
+  return axios({
+    url: `${host}/api/role/` + id + '/',
+    method: 'put',
+    data
+  })
+}
+
+export function deleteRole(id) {
+  return axios({
+    url: `${host}/api/role/` + id + '/',
     method: 'delete'
   })
 }

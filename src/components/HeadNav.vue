@@ -29,6 +29,11 @@
   import bus from './bus';
     export default {
       name: "HeadNav",
+      data(){
+        return {
+          collapse:false
+        }
+      },
       props:{
         userInfo:{
           required:true,

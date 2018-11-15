@@ -10,9 +10,16 @@ import ElementUI from 'element-ui'
 import './icons'
 import 'font-awesome/css/font-awesome.min.css'
 import './icon/iconfont.css'
+
+import  * as filters  from './filters'    //引入全局过滤器
 // import './styles/index.scss'
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
+
+//注册全局过滤器
+Object.keys(filters).forEach(key=>{
+  Vue.filter(key,filters[key])
+})
 
 
 

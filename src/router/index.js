@@ -4,6 +4,8 @@ import Login from '@/views/Login'
 import Index from '@/views/Index'
 import Nofind from '@/views/404'
 import Hosts  from '@/views/hosts/Hosts'
+import Idcs  from '@/views/hosts/Idcs'
+import Roles  from '@/views/hosts/Roles'
 import Layout from '@/components/Layout'
 Vue.use(Router)
 import store from '../store/store'
@@ -17,17 +19,27 @@ const router = new Router({
     {
       path: '/',
       component:Layout,
-      title:'layout',
+      meta:{title:'layout'},
       children:[
         {
           path: '/index',
           component: Index,
-          title: '系统首页'
+          meta:{title: '系统首页'}
         },
         {
           path: '/hosts',
           component: Hosts,
-          title: '主机管理'
+          meta:{title: '主机管理'}
+        },
+        {
+          path: '/idc',
+          component: Idcs,
+          meta:{title: '机房管理'}
+        },
+        {
+          path: '/role',
+          component: Roles,
+          meta:{title: '角色管理'}
         },
       ]
     },

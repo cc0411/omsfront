@@ -3,9 +3,9 @@
     <ul>
       <li class="tags-li" v-for="(item,index) in tagsList" :class="{'active': isActive(item.path)}" :key="index">
         <router-link :to="item.path" class="tags-li-title">
-          {{item.title}}
+         {{item.title}}
         </router-link>
-        <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
+        <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-cl-close"></i></span>
       </li>
     </ul>
     <div class="tags-close-box">
@@ -67,6 +67,7 @@
           }
           this.tagsList.push({
             title: route.meta.title,
+
             path: route.fullPath,
             name: route.matched[1].components.default.name
           })

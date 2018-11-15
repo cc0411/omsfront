@@ -40,12 +40,12 @@ name: 'Menus',
       collapse: false,
       items: [
         {
-          icon: 'el-icon-cl-yibiaopan',
+          icon: 'el-icon-cl-dashboard',
           index: 'index',
           title: 'Dashboard'
         },
         {
-          icon: 'el-icon-cl-shebeiguanli',
+          icon: 'el-icon-cl-hosts',
           index: '1',
           title: '资产管理',
           subs: [
@@ -58,13 +58,13 @@ name: 'Menus',
               title: '机房管理'
             },
             {
-              index: 'tag',
+              index: 'role',
               title: '角色管理'
             },
           ]
         },
         {
-          icon: 'el-icon-lx-warn',
+          icon: 'el-icon-cl-batch',
           index: '2',
           title: 'Salt',
           subs: [
@@ -79,7 +79,7 @@ name: 'Menus',
           ]
         },
         {
-          icon: 'el-icon-cl-quanxianshenpi',
+          icon: 'el-icon-cl-permission',
           index: 'admin',
           title: '后台管理'
         },

@@ -21,8 +21,8 @@ import  HeadNav from '../components/HeadNav'
 import  Menus from '../components/Menus'
 import  Tags from '../components/Tags'
 import  Footer from '../components/Footer'
-import bus from '../components/bus';
-import {getUserDetail, updateUserInfo} from '../api/api'
+import bus from './bus';
+import {getUserDetail} from '../api/api'
 export default {
 
 
@@ -45,10 +45,11 @@ name: 'Layout',
  },
 
   created(){
-    this.getUserInfo(),
+
     bus.$on('collapse', msg => {
       this.collapse = msg;
     })
+    this.getUserInfo(),
     // 只有在标签页列表里的页面才使用keep-alive，即关闭标签之后就不保存到内存中了。
     bus.$on('tags', msg => {
       let arr = [];
