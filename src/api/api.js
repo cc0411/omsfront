@@ -1,5 +1,5 @@
-import axios from '@/http'
-
+// import axios from '@/http'
+import axios from 'axios'
 let  host = 'http://127.0.0.1:8000';
 export const Login = params => {
   return axios.post(`${host}/login/`, params)
@@ -96,6 +96,32 @@ export function putRole(id, data) {
 export function deleteRole(id) {
   return axios({
     url: `${host}/api/role/` + id + '/',
+    method: 'delete'
+  })
+}
+
+
+export function addBusinessUnit(data) {
+  return axios({
+    url: `${host}/api/businessunit/`,
+    method: 'post',
+    data
+  })
+}
+//获取角色信息
+export const getBusinessUnits = () => { return axios.get(`${host}/api/businessunit/`) }
+
+export function putBusinessUnit(id, data) {
+  return axios({
+    url: `${host}/api/businessunit/` + id + '/',
+    method: 'put',
+    data
+  })
+}
+
+export function deleteBusinessUnit(id) {
+  return axios({
+    url: `${host}/api/businessunit/` + id + '/',
     method: 'delete'
   })
 }

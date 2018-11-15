@@ -61,6 +61,10 @@ name: 'Menus',
               index: 'role',
               title: '角色管理'
             },
+            {
+              index:'businessunit',
+              title:'业务线管理'
+            }
           ]
         },
         {

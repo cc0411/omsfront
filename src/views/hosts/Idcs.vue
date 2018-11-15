@@ -7,7 +7,8 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="success" round  >添加机房</el-button>
+
+        <el-button type="success" round  @click="addIdc">添加机房</el-button>
         <el-table
           :data='IdcData'
           tooltip-effect="dark"
@@ -33,7 +34,7 @@
           <el-table-column label="操作"  width="180" aligin="center">
             <template slot-scope="scope">
               <el-button type="primary"    icon="el-icon-edit" circle></el-button>
-              <el-button type="danger"  @click="handlleDelete(scope.row.pk)"  icon="el-icon-delete" circle></el-button>
+              <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -67,18 +68,25 @@
           })
         },
         //删除机房
-        handlleDelete(id) {
-          deleteIdc(id).then(response => {
-            this.$message({
-              message: '恭喜你，删除成功',
-              type: 'success'
+        handleDelete(row){
+          this.$confirm("确定要删除吗？").then(()=>{
+            deleteIdc(row.id).then((res)=>{
+              this.$message({
+                message: '恭喜你，删除成功',
+                type: 'success'
+              })
+              this.getIdcInfo()
             })
-            this.getIdcInfo()
+
           }).catch(error => {
-            this.$message.error('删除失败')
+            this.$message.info('点错了')
             console.log(error)
           })
         },
+
+        addIdc(){
+          this.$router.push('/idc/add')
+        }
       }
     }
 </script>

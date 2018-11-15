@@ -15,11 +15,12 @@ function startLoading() {    //使用Element loading-start 方法
 function endLoading() {    //使用Element loading-close 方法
   loading.close()
 }
-
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 //request拦截器，判断store中是否有token  存在再每个header上加token
 axios.interceptors.request.use(config=> {
   startLoading()
+
   if (store.state.userInfo.token) {
     config.headers.Authorization = `JWT ${store.state.userInfo.token}`;
   }
@@ -45,10 +46,6 @@ axios.interceptors.response.use(
         localStorage.removeItem('name')
         // 页面跳转
         router.push('/login')
-      case 400:
-        Message.error('账号密码错误')
-      case  403:
-        Message.error("您没有权限访问")
 
 
     }
@@ -56,5 +53,6 @@ axios.interceptors.response.use(
     return Promise.reject(error)
   })
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-export default axios
+
+
+// export default axios

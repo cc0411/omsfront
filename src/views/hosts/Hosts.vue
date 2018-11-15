@@ -8,7 +8,7 @@
       <div class="container">
         <div class="handle-box">
           <el-button type="danger"  round @click="delAll">批量删除</el-button>
-          <el-button type="success" round  >添加主机</el-button>
+          <el-button type="success" round  @click="addHost">添加主机</el-button>
           <el-select v-model="listQuery.status"   @change="changeStatus" placeholder="请选择" class="handle-select mr10">
             <el-option label="上线" value="online">
             </el-option>
@@ -98,7 +98,7 @@
             <el-table-column label="操作"  width="180" aligin="center">
               <template slot-scope="scope">
               <el-button type="primary"    icon="el-icon-edit" circle></el-button>
-              <el-button type="danger"  @click="handlleDelete(scope.row.id)"  icon="el-icon-delete" circle></el-button>
+                <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -241,18 +241,26 @@
         },
 
         //删除主机
-        handlleDelete(id) {
-          delHost(id).then(response => {
-            this.$message({
-              message: '恭喜你，删除成功',
-              type: 'success'
+        handleDelete(row){
+          this.$confirm("确定要删除吗？").then(()=>{
+            delHost(row.id).then((res)=>{
+              this.$message({
+                message: '恭喜你，删除成功',
+                type: 'success'
+              })
+              this.gethostInfo()
             })
-            this.gethostInfo()
+
           }).catch(error => {
-            this.$message.error('删除失败')
+            this.$message.info('点错了')
             console.log(error)
           })
-            },
+        },
+
+        addHost(){
+            this.$router.push('/hosts/add')
+        },
+
         //搜索主机
         searchClick(){
           this.listQuery.search = this.searchdata;

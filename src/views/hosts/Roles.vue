@@ -7,7 +7,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="success" round  >添加角色</el-button>
+        <el-button type="success" round  @click="addRole">添加角色</el-button>
         <el-table
           :data='RoleData'
           tooltip-effect="dark"
@@ -33,7 +33,7 @@
           <el-table-column label="操作"  width="180" aligin="center">
             <template slot-scope="scope">
               <el-button type="primary"    icon="el-icon-edit" circle></el-button>
-              <el-button type="danger"  @click="handlleDelete(scope.row.pk)"  icon="el-icon-delete" circle></el-button>
+              <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -47,7 +47,7 @@
     export default {
         name: "Roles",
       created() {
-        this.getIRolenfo();
+        this.getRoleInfo();
       },
       data(){
         return{
@@ -55,7 +55,7 @@
         }
       },
       methods:{
-        //  获取机房信息
+        //  获取角色信息
         getRoleInfo(){
           getIRoles()
             .then(res=>{
@@ -66,19 +66,27 @@
             console.log(error)
           })
         },
-        //删除机房
-        handlleDelete(id) {
-          deleteRole(id).then(response => {
-            this.$message({
-              message: '恭喜你，删除成功',
-              type: 'success'
+        //删除角色
+        handleDelete(row){
+          this.$confirm("确定要删除吗？").then(()=>{
+            deleteRole(row.id).then((res)=>{
+              this.$message({
+                message: '恭喜你，删除成功',
+                type: 'success'
+              })
+              this.getRoleInfo()
             })
-            this.getIdcInfo()
+
           }).catch(error => {
-            this.$message.error('删除失败')
+            this.$message.info('点错了')
             console.log(error)
           })
         },
+
+
+        addRole(){
+          this.$router.push('/role/add')
+        }
       }
     }
 </script>
