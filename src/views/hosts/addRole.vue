@@ -16,6 +16,7 @@
             <el-input type="textarea" rows="5" v-model="Roleinfo.desc"></el-input>
           </el-form-item>
           <el-form-item>
+            <p class="error-text" v-show="error">{{error}}</p>
             <el-button type="primary" @click="onSubmit('roleform')">提交</el-button>
             <el-button>取消</el-button>
           </el-form-item>
@@ -36,6 +37,7 @@ name: 'addRole',
         name:'',
         desc:''
       },
+      error:false,
       rules:{
         name: [
           { required: true, message: '角色名不可以为空', trigger: 'blur' }
@@ -45,13 +47,22 @@ name: 'addRole',
   },
   methods: {
     onSubmit(Formname) {
+      var that = this
       this.$refs[Formname].validate((valid) => {
         if (valid) {
           addRole(this.Roleinfo)
             .then(res=>{
               this.$message.success('添加成功！');
               this.$router.push("/role")
-            })
+            }).catch(function (error) {
+            const err = error.response.data;
+            if("non_field_errors" in err){
+              that.error =err.non_field_errors[0];
+            }
+            if("name" in err){
+              that.error=err.name[0];
+            }
+          })
         } else {
           this.$message.error('添加失败')
         }
@@ -63,5 +74,7 @@ name: 'addRole',
 </script>
 
 <style scoped>
-
+  .error-text{
+    color:#fa8341;
+  }
 </style>

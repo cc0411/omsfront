@@ -7,7 +7,7 @@
       <div class="content">
         <transition name="move" mode="out-in">
           <keep-alive :include="tagsList">
-            <router-view :userInfo="userInfo"></router-view>
+            <router-view :userInfo="userInfo" ></router-view>
           </keep-alive>
         </transition>
       <app-footer></app-footer>
@@ -31,10 +31,7 @@ name: 'Layout',
     return {
       tagsList: [],
       collapse: false,
-      userInfo: {
-        name: '',
-        image:'',
-      }
+      userInfo:{},
     }
   },
  components:{
@@ -60,6 +57,7 @@ name: 'Layout',
     })
   },
   methods:{
+  //获取用户个人信息
     getUserInfo () { //请求用户信息
       getUserDetail().then((response)=> {
         this.userInfo = response.data;

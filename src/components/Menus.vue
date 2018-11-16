@@ -93,6 +93,7 @@ name: 'Menus',
   computed:{
     onRoutes(){
       return this.$route.path.replace('/','');
+
     }
   },
   created(){

@@ -15,7 +15,7 @@ function startLoading() {    //使用Element loading-start 方法
 function endLoading() {    //使用Element loading-close 方法
   loading.close()
 }
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
 
 //request拦截器，判断store中是否有token  存在再每个header上加token
 axios.interceptors.request.use(config=> {

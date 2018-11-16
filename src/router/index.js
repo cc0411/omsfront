@@ -4,11 +4,13 @@ import Login from '@/views/Login'
 import Index from '@/views/Index'
 import Nofind from '@/views/404'
 import Hosts  from '@/views/hosts/Hosts'
+import addHost  from '@/views/hosts/addHost'
 import addIdc  from '@/views/hosts/addIdc'
 import Idcs  from '@/views/hosts/Idcs'
 import addRole  from '@/views/hosts/addRole'
 import Roles  from '@/views/hosts/Roles'
 import BusinessUnit  from '@/views/hosts/BusinessUnit'
+import addBusinessUnit  from '@/views/hosts/addBusinessUnit'
 import Layout from '@/components/Layout'
 Vue.use(Router)
 import store from '../store/store'
@@ -35,6 +37,11 @@ const router = new Router({
           meta:{title: '主机管理'}
         },
         {
+          path: '/hosts/add',
+          component: addHost,
+          meta:{title: '添加主机'}
+        },
+        {
           path: '/idc',
           component: Idcs,
           meta:{title: '机房管理'}
@@ -58,6 +65,12 @@ const router = new Router({
           path: '/businessunit',
           component: BusinessUnit,
           meta:{title: '业务线管理'}
+        },
+
+        {
+          path: '/businessunit/add',
+          component: addBusinessUnit,
+          meta:{title: '添加业务线'}
         },
       ]
     },

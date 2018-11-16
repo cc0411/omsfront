@@ -21,7 +21,7 @@
             </span>
             <el-input v-model="LoginUser.password" placeholder="请输入密码" type="password"></el-input>
           </el-form-item>
-
+            <p class="error-text" v-show="error">{{error}}</p>
             <el-button  type="primary" style="width:100%;margin-bottom:30px;" @click="handleSubmit('LoginForm')">登录</el-button>
 
         </el-form>
@@ -40,6 +40,7 @@ name: 'login',
         username: '',
         password: '',
       },
+      error:false,
       rules: {
         username: [
           { required: true, message: '用户名不可以为空', trigger: 'blur' }
@@ -55,7 +56,7 @@ name: 'login',
   },
   methods: {
     handleSubmit (Formname) {
-
+      var that = this;
       this.$refs[Formname].validate((valid) => {
         if (valid) {
           Login(this.LoginUser)
@@ -64,11 +65,21 @@ name: 'login',
             localStorage.setItem("name", this.LoginUser.username)
             localStorage.setItem("token", res.data.token)
             // 存储数据到store
-            // this.$store.dispatch("setInfo")
-              this.$store.dispatch("login")
+              that.$store.dispatch("login")
             //消息提醒并跳转首页
             this.$message.success("登陆成功");
             this.$router.push("/index")
+          }).catch(function (error) {
+            const err = error.response.data;
+            if("non_field_errors" in err){
+              that.error =err.non_field_errors[0];
+            }
+            if("username" in err){
+              that.error=err.username[0];
+            }
+            if("password" in error){
+              that.error=err.password[0];
+            }
           })
         } else {
             this.$message.error('账号密码错误')
@@ -186,6 +197,9 @@ name: 'login',
       position: absolute;
       right: 35px;
       bottom: 28px;
+    }
+    .error-text{
+      color:#fa8341;
     }
   }
 </style>

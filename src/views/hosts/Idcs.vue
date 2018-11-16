@@ -44,6 +44,7 @@
 </template>
 
 <script>
+
   import { getIdcs,deleteIdc} from '../../api/api'
     export default {
         name: "Idcs",
@@ -66,6 +67,8 @@
             .then(res=>{
               console.log(res)
               this.IdcData = res.data;
+              this.$store.commit("IDC",res.data)
+
 
             }).catch(function (error) {
             console.log(error)

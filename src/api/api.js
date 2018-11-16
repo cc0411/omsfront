@@ -13,14 +13,8 @@ export const updateUserInfo = params => { return axios.patch(`${host}/api/users/
 
 
 //添加主机
-export function addHost(params) {
-  return axios({
-    url:`${host}/api/assets/`,
-    method:'post',
-    params
-  })
+export const addHost = params => {return axios.post(`${host}/api/assets/`, params)}
 
-}
 //删除主机api/
 export function delHost(id)  {
   return axios({

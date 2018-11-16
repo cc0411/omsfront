@@ -71,7 +71,7 @@ data(){
         .then(res=>{
           console.log(res)
           this.BusinessUnitData = res.data;
-
+          this.$store.commit("BUSINESSUNIT",res.data)
         }).catch(function (error) {
         console.log(error)
       })
@@ -94,9 +94,10 @@ data(){
     },
 
     addBusinessUnit(){
-      this.$router.push('/business/add')
-    }
-  }
+      this.$router.push('/businessunit/add')
+    },
+  },
+
 
 }
 </script>

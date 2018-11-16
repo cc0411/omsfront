@@ -161,7 +161,6 @@
 
           }
       },
-
       methods:{
         //  获取主机信息
           gethostInfo(){

@@ -37,7 +37,7 @@ name: 'Index',
   props:{
     userInfo:{
       required:true,
-      type:Object,
+      type:Object
     }
   },
 

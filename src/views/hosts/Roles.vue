@@ -43,6 +43,7 @@
 </template>
 
 <script>
+
   import { getIRoles,deleteRole} from '../../api/api'
     export default {
         name: "Roles",
@@ -65,6 +66,7 @@
             .then(res=>{
               console.log(res)
               this.RoleData = res.data;
+              this.$store.commit("ROLE",res.data)
 
             }).catch(function (error) {
             console.log(error)

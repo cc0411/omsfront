@@ -16,8 +16,9 @@ import  * as filters  from './filters'    //引入全局过滤器
 // import './styles/index.scss'
 import './http'
 import Axios from 'axios'
+Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+Vue.prototype.$http =Axios;
 
-Vue.prototype.$http =Axios
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
