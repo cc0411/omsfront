@@ -7,9 +7,10 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="success" round  @click="addRole">添加角色</el-button>
+        <el-button type="success" round  @click="handleAdd">添加角色</el-button>
         <el-table
-          :data='RoleData'
+          :data='TableData'
+          v-if="TableData.length>0"
           tooltip-effect="dark"
           style="width: 100%"
         >
@@ -32,40 +33,55 @@
           </el-table-column>
           <el-table-column label="操作"  width="180" aligin="center">
             <template slot-scope="scope">
-              <el-button type="primary"    icon="el-icon-edit" circle></el-button>
+              <el-button type="primary"   @click="handleEdit(scope.row)" icon="el-icon-edit" circle></el-button>
               <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
+    <Roledialog :dialog="dialog"
+                :rowdata="rowdata"
+                :FormData="FormData"
+                @updateroles="getRoleData">
+
+    </Roledialog>
   </div>
 </template>
 
 <script>
-
-  import { getIRoles,deleteRole} from '../../api/api'
+import Roledialog from './Roledialog'
+import { getRoles,deleteRole} from '../../api/api'
     export default {
         name: "Roles",
       created() {
-        this.getRoleInfo();
+        this.getRoleData();
       },
-      watch: {
-        // 如果路由有变化，会再次执行该方法
-        "$route": "getRoleInfo"
+      components:{
+          Roledialog,
       },
       data(){
         return{
-          RoleData: [],
+          TableData: [],
+          dialog:{
+            show:false,
+            title:'',
+            option:'edit',
+          },
+          FormData:{
+            name:'',
+            desc:''
+          },
+          rowdata:{},
         }
       },
       methods:{
         //  获取角色信息
-        getRoleInfo(){
-          getIRoles()
+        getRoleData(){
+          getRoles()
             .then(res=>{
               console.log(res)
-              this.RoleData = res.data;
+              this.TableData = res.data;
               this.$store.commit("ROLE",res.data)
 
             }).catch(function (error) {
@@ -80,7 +96,7 @@
                 message: '恭喜你，删除成功',
                 type: 'success'
               })
-              this.getRoleInfo()
+              this.getRoleData()
             })
 
           }).catch(error => {
@@ -88,10 +104,26 @@
             console.log(error)
           })
         },
-
-
-        addRole(){
-          this.$router.push('/role/add')
+        //编辑角色
+        handleEdit(row){
+          this.dialog={
+            title:"编辑角色",
+            show:true,
+            option:'edit',
+          },
+          this.rowdata=row;
+          this.FormData ={
+            name:row.name,
+            desc:row.desc
+          }
+        },
+        //添加角色
+        handleAdd(){
+          this.dialog={
+            title:"添加角色",
+            show:true,
+            option:'add',
+          };
         }
       }
     }

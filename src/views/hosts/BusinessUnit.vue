@@ -7,9 +7,10 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="success" round @click="addBusinessUnit" >添加业务线</el-button>
+        <el-button type="success" round @click="handleAdd" >添加业务线</el-button>
         <el-table
-          :data='BusinessUnitData'
+          :data='TableData'
+          v-if="TableData.length>0"
           tooltip-effect="dark"
           style="width: 100%"
         >
@@ -37,40 +38,58 @@
           </el-table-column>
           <el-table-column label="操作"  width="180" aligin="center">
             <template slot-scope="scope">
-              <el-button type="primary"    icon="el-icon-edit" circle></el-button>
+              <el-button type="primary"  @click="handleEdit(scope.row)"  icon="el-icon-edit" circle></el-button>
               <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
+    <BusinessUnitdialog :dialog="dialog"
+                :rowdata="rowdata"
+                :FormData="FormData"
+                :TableData="TableData"
+                @updatebusinessunits="getBusinessUnitsData">
+
+    </BusinessUnitdialog>
   </div>
 </template>
 
 <script>
+  import BusinessUnitdialog from './BusinessUnitdialog'
 import {getBusinessUnits,deleteBusinessUnit}  from '../../api/api'
 export default {
 name: 'BusinessUnit',
 data(){
   return {
-    BusinessUnitData:[],
+    TableData:[],
+    dialog:{
+      show:false,
+      title:'',
+      option:'edit',
+    },
+    rowdata:{},
+    FormData: {
+      parent_unit: '',
+      name: '',
+      desc: '',
+    },
   }
 },
-  created(){
-  this.getBusinessUnitsInfo()
-
+  components:{
+  BusinessUnitdialog
   },
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    "$route": "getBusinessUnitsInfo"
+  created(){
+  this.getBusinessUnitsData()
+
   },
   methods:{
     //  获取机房信息
-    getBusinessUnitsInfo(){
+    getBusinessUnitsData(){
       getBusinessUnits()
         .then(res=>{
           console.log(res)
-          this.BusinessUnitData = res.data;
+          this.TableData = res.data;
           this.$store.commit("BUSINESSUNIT",res.data)
         }).catch(function (error) {
         console.log(error)
@@ -84,7 +103,7 @@ data(){
             message: '恭喜你，删除成功',
             type: 'success'
           })
-          this.getBusinessUnitsInfo()
+          this.getBusinessUnitsData()
         })
 
       }).catch(error => {
@@ -93,9 +112,28 @@ data(){
       })
     },
 
-    addBusinessUnit(){
-      this.$router.push('/businessunit/add')
+    //编辑业务线
+    handleEdit(row){
+      this.dialog={
+        title:"编辑业务线",
+        show:true,
+        option:'edit',
+      },
+        this.rowdata=row;
+      this.FormData ={
+        name:row.name,
+        parent_unit:row.parent_unit,
+        desc:row.desc
+      }
     },
+    //添加业务线
+    handleAdd(){
+      this.dialog={
+        title:"添加业务线",
+        show:true,
+        option:'add',
+      };
+    }
   },
 
 

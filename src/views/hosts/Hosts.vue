@@ -7,8 +7,9 @@
       </div>
       <div class="container">
         <div class="handle-box">
+          <div class="handle-head">
           <el-button type="danger"  round @click="delAll">批量删除</el-button>
-          <el-button type="success" round  @click="addHost">添加主机</el-button>
+          <el-button type="success" round  @click="handleAdd">添加主机</el-button>
           <el-select v-model="listQuery.status"   @change="changeStatus" placeholder="请选择" class="handle-select mr10">
             <el-option label="上线" value="online">
             </el-option>
@@ -25,9 +26,13 @@
             <el-input v-model="searchdata" placeholder="搜索关键词" class="handle-input mr10"></el-input>
             <el-button type="primary" icon="search" @click="searchClick">搜索</el-button>
           </div>
+          </div>
           <el-table
             ref="multipleTable"
             :data='HostsData'
+            v-if="HostsData.length>0"
+            max-height="500"
+            border
             tooltip-effect="dark"
             style="width: 100%"
             @selection-change="handleSelectionChange"
@@ -97,7 +102,7 @@
             </el-table-column>
             <el-table-column label="操作"  width="180" aligin="center">
               <template slot-scope="scope">
-              <el-button type="primary"    icon="el-icon-edit" circle></el-button>
+              <el-button type="primary"  @click="handleEdit(scope.row)"   icon="el-icon-edit" circle></el-button>
                 <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
               </template>
             </el-table-column>
@@ -109,30 +114,58 @@
               :current-page.sync="listQuery.page"
               :page-sizes="[10, 20, 50,100,500]"
               :page-size="listQuery.page_size"
-              layout="sizes, prev, pager, next,total"
+              layout="total, sizes, prev, pager, next, jumper"
               :total="tabletotal">
             </el-pagination>
           </div>
         </div>
       </div>
+      <Hostdialog :dialog="dialog"
+                  :rowdata="rowdata"
+                  :FormData="FormData"
+                  @updatehosts="getHostData">
+
+      </Hostdialog>
     </div>
 </template>
 
 <script>
+  import Hostdialog from './Hostdialog'
   import { getHosts ,delHost} from '../../api/api'
     export default {
         name: "Hosts",
       created() {
-        this.gethostInfo();
+        this.getHostData();
 
       },
-      watch: {
-        // 如果路由有变化，会再次执行该方法
-        "$route": "gethostInfo"
+      components:{
+          Hostdialog
       },
-
       data(){
           return{
+            FormData:{
+              hostname:'',
+              wip:'',
+              nip:'',
+              status:'',
+              server_type:'',
+              sn:'',
+              instance_id:'',
+              idc:'',
+              role:'',
+              business_unit:'',
+              desc:'',
+              cpu_info:'',
+              memory:0,
+              disk:0,
+              os:'',
+            },
+            dialog:{
+              show:false,
+              title:'',
+              option:'edit',
+            },
+            rowdata:{},
             searchdata:'',
             tabletotal: 0,
             HostsData: [],
@@ -163,7 +196,7 @@
       },
       methods:{
         //  获取主机信息
-          gethostInfo(){
+          getHostData(){
             getHosts(this.listQuery)
               .then(res=>{
                 this.HostsData = res.data.results;
@@ -190,7 +223,7 @@
           } else {
             this.listQuery.ordering = '-wip'
           }
-          this.gethostInfo()
+          this.getHostData()
         },
         sortBynip(order) {
           if (order === 'ascending') {
@@ -198,7 +231,7 @@
           } else {
             this.listQuery.ordering = '-nip'
           }
-          this.gethostInfo()
+          this.getHostData()
         },
         sortByhostname(order) {
           if (order === 'ascending') {
@@ -206,7 +239,7 @@
           } else {
             this.listQuery.ordering = '-hostname'
           }
-          this.gethostInfo()
+          this.getHostData()
         },
         sortByctime(order) {
           if (order === 'ascending') {
@@ -214,7 +247,7 @@
           } else {
             this.listQuery.ordering = '-ctime'
           }
-          this.gethostInfo()
+          this.getHostData()
         },
         handleSelectionChange(val) {
           this.multipleSelection = val;
@@ -229,7 +262,7 @@
           for( let i=0;i<id_list.length;i++){
             delHost(id_list[i]).then(response => {
              console.log('删除成功')
-              this.gethostInfo()
+              this.getHostData()
             }).catch(error => {
               this.$message.error('删除失败')
               console.log(error)
@@ -251,7 +284,7 @@
                 message: '恭喜你，删除成功',
                 type: 'success'
               })
-              this.gethostInfo()
+              this.getHostData()
             })
 
           }).catch(error => {
@@ -260,31 +293,61 @@
           })
         },
 
-        addHost(){
-            this.$router.push('/hosts/add')
+        handleEdit(row){
+          this.dialog={
+            title:"编辑主机",
+            show:true,
+            option:'edit',
+          },
+          this.rowdata=row;
+          this.FormData ={
+            hostname:row.hostname,
+            wip:row.wip,
+            nip:row.nip,
+            status:row.status,
+            server_type:row.server_type,
+            sn:row.sn,
+            instance_id:row.instance_id,
+            idc:row.idc,
+            role:row.role,
+            business_unit:row.business_unit,
+            desc:row.desc,
+            cpu_info:row.cpu_info,
+            memory:row.memory,
+            disk:row.disk,
+            os:row.os,
+          }
+        },
+        //添加主机
+        handleAdd(){
+          this.dialog={
+            title:"添加主机",
+            show:true,
+            option:'add',
+          };
         },
 
         //搜索主机
         searchClick(){
           this.listQuery.search = this.searchdata;
-          this.gethostInfo()
+          this.getHostData()
         },
         changeStatus(val){
           this.listQuery.status = val
-          this.gethostInfo()
+          this.getHostData()
         },
         changeServerType(val){
           this.listQuery.server_type = val
-          this.gethostInfo()
+          this.getHostData()
         },
         handleCurrentChange(val) {
            // this.currentPage =val  //点击多少页
           this.listQuery.page = val
-          this.gethostInfo()
+          this.getHostData()
         },
         handleSizeChange(val) {
           this.listQuery.page_size= val  //每页显示多少条
-          this.gethostInfo()
+          this.getHostData()
         },
       }
     }
@@ -294,8 +357,12 @@
   .handle-box {
     margin-bottom: 20px;
   }
+  .handle-head {
+    padding-bottom: 30px;
+  }
   .search {
     float: right;
+
   }
   .handle-input {
     width: 300px;

@@ -1,6 +1,7 @@
 // import axios from '@/http'
 import axios from 'axios'
 let  host = 'http://127.0.0.1:8000';
+// let  host = 'http://www.jcwit.com:8000';
 export const Login = params => {
   return axios.post(`${host}/login/`, params)
 };
@@ -24,13 +25,14 @@ export function delHost(id)  {
 }
 
 //修改主机信息
-export function updateHost(id, params) {
+export function updateHost(id, data) {
   return axios({
     url: `${host}/api/assets/` + id + '/',
-    method:'putch',
-    params
+    method: 'patch',
+    data
   })
 }
+
 
 //获取主机列表信息
 export function getHosts(params) {
@@ -53,10 +55,10 @@ export function addIdc(data) {
 //获取机房信息
 export const getIdcs = () => { return axios.get(`${host}/api/idc/`) }
 
-export function putIdc(id, data) {
+export function updateIdc(id, data) {
   return axios({
     url: `${host}/api/idc/` + id + '/',
-    method: 'put',
+    method: 'patch',
     data
   })
 }
@@ -77,12 +79,12 @@ export function addRole(data) {
   })
 }
 //获取角色信息
-export const getIRoles = () => { return axios.get(`${host}/api/role/`) }
+export const getRoles = () => { return axios.get(`${host}/api/role/`) }
 
-export function putRole(id, data) {
+export function updateRole(id, data) {
   return axios({
     url: `${host}/api/role/` + id + '/',
-    method: 'put',
+    method: 'patch',
     data
   })
 }
@@ -105,10 +107,10 @@ export function addBusinessUnit(data) {
 //获取角色信息
 export const getBusinessUnits = () => { return axios.get(`${host}/api/businessunit/`) }
 
-export function putBusinessUnit(id, data) {
+export function updateBusinessUnit(id, data) {
   return axios({
     url: `${host}/api/businessunit/` + id + '/',
-    method: 'put',
+    method: 'patch',
     data
   })
 }

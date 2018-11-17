@@ -8,9 +8,10 @@
     <div class="container">
       <div class="handle-box">
 
-        <el-button type="success" round  @click="addIdc">添加机房</el-button>
+        <el-button type="success" round  @click="handleAdd">添加机房</el-button>
         <el-table
-          :data='IdcData'
+          :data='TableData'
+          v-if="TableData.length>0"
           tooltip-effect="dark"
           style="width: 100%"
         >
@@ -33,40 +34,55 @@
           </el-table-column>
           <el-table-column label="操作"  width="180" aligin="center">
             <template slot-scope="scope">
-              <el-button type="primary"    icon="el-icon-edit" circle></el-button>
+              <el-button type="primary"  @click="handleEdit(scope.row)"  icon="el-icon-edit" circle></el-button>
               <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
+    <Idcdialog :dialog="dialog"
+                :rowdata="rowdata"
+                :FormData="FormData"
+                @updateidcs="getIdcData">
+
+    </Idcdialog>
   </div>
 </template>
 
 <script>
-
+import Idcdialog  from './Idcdialog'
   import { getIdcs,deleteIdc} from '../../api/api'
     export default {
         name: "Idcs",
       created() {
-        this.getIdcInfo();
+        this.getIdcData();
       },
-      watch: {
-        // 如果路由有变化，会再次执行该方法
-        "$route": "getIdcInfo"
+      components:{
+        Idcdialog
       },
       data(){
         return{
-          IdcData: [],
+          TableData: [],
+          dialog:{
+            show:false,
+            title:'',
+            option:'edit',
+          },
+          FormData:{
+            name:'',
+            desc:''
+          },
+          rowdata:{},
         }
       },
       methods:{
-        //  获取机房信息
-        getIdcInfo(){
+        //获取机房信息
+        getIdcData(){
           getIdcs()
             .then(res=>{
               console.log(res)
-              this.IdcData = res.data;
+              this.TableData = res.data;
               this.$store.commit("IDC",res.data)
 
 
@@ -82,7 +98,7 @@
                 message: '恭喜你，删除成功',
                 type: 'success'
               })
-              this.getIdcInfo()
+              this.getIdcData()
             })
 
           }).catch(error => {
@@ -90,10 +106,30 @@
             console.log(error)
           })
         },
-
-        addIdc(){
-          this.$router.push('/idc/add')
+        //编辑机房
+        handleEdit(row){
+          this.dialog={
+            title:"编辑机房",
+            show:true,
+            option:'edit',
+          };
+          this.rowdata=row;
+          this.FormData ={
+            name:row.name,
+            desc:row.desc
+          }
+        },
+        //添加机房
+        handleAdd(){
+          this.dialog={
+            title:"添加机房",
+            show:true,
+            option:'add',
+          };
         }
+
+
+
       }
     }
 </script>
