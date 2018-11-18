@@ -13,7 +13,7 @@ export default {
 <style>
   @import "../static/css/main.css";
   /*深色主题*/
-  /*@import "../static/css/color-dark.css";     */
+  @import "../static/css/color-dark.css";
   /*浅绿色主题*/
-  @import "../static/css/theme-green/color-green.css";
+  /*@import "../static/css/theme-green/color-green.css";*/
 </style>
