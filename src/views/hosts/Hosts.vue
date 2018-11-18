@@ -6,119 +6,134 @@
         </el-breadcrumb>
       </div>
       <div class="container">
-        <div class="handle-box">
-          <div class="handle-head">
-          <el-button type="danger"  round @click="delAll">批量删除</el-button>
-          <el-button type="success" round  @click="handleAdd">添加主机</el-button>
-          <el-select v-model="listQuery.status"   @change="changeStatus" placeholder="请选择" class="handle-select mr10">
-            <el-option label="上线" value="online">
-            </el-option>
-            <el-option label="下线" value="offline">
-            </el-option>
-          </el-select>
-          <el-select v-model="listQuery.server_type"   @change="changeServerType" placeholder="请选择" class="handle-select mr10">
-              <el-option label="物理机"  value="physical"></el-option>
-            <el-option label="虚拟机" value="virtual"></el-option>
-            <el-option label="云主机" value="instance"></el-option>
-          </el-select>
+        <el-row>
+          <el-col :span="4">
+            <div class="treeheader">
+              <h3>业务线树</h3>
+            </div>
+            <el-tree :data="treedata"
+                     :props="defaultProps"
+                     accordion
+                     @node-click="handleNodeClick">
+            </el-tree>
+          </el-col>
+          <el-col :span="20">
+            <div class="handle-box">
+              <div class="handle-head">
+                <el-button type="danger"  round @click="delAll">批量删除</el-button>
+                <el-button type="success" round  @click="handleAdd">添加主机</el-button>
+                <el-select v-model="listQuery.status"   @change="changeStatus" placeholder="请选择" class="handle-select mr10">
+                  <el-option label="上线" value="online">
+                  </el-option>
+                  <el-option label="下线" value="offline">
+                  </el-option>
+                </el-select>
+                <el-select v-model="listQuery.server_type"   @change="changeServerType" placeholder="请选择" class="handle-select mr10">
+                  <el-option label="物理机"  value="physical"></el-option>
+                  <el-option label="虚拟机" value="virtual"></el-option>
+                  <el-option label="云主机" value="instance"></el-option>
+                </el-select>
 
-          <div class="search">
-            <el-input v-model="searchdata" placeholder="搜索关键词" class="handle-input mr10"></el-input>
-            <el-button type="primary" icon="search" @click="searchClick">搜索</el-button>
-          </div>
-          </div>
-          <el-table
-            ref="multipleTable"
-            :data='HostsData'
-            v-if="HostsData.length>0"
-            max-height="500"
-            border
-            tooltip-effect="dark"
-            style="width: 100%"
-            @selection-change="handleSelectionChange"
-            @sort-change="sortChange"
-          >
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              prop="hostname"
-              label="主机名"
-              sortable="custom"
-              width="200">
-            </el-table-column>
-            <el-table-column
-              prop="wip"
-              label="外网地址"
-              sortable="custom"
-              width="200">
-            </el-table-column>
-            <el-table-column
-              prop="nip"
-              label="内网地址"
-              sortable="custom"
-              width="200">
-            </el-table-column>
-            <el-table-column
-              prop="idc"
-              label="机房"
-              width="150">
-            </el-table-column>
-            <el-table-column prop='server_type' label='类型'  width="120" aligin="center">
-              <template slot-scope="scope">
-                <div slot="reference" class="name-wrapper" style="text-align: left">
-                  <el-tag style="color: #000" :color="ASSET_TYPE[scope.row.server_type].color">
-                    {{ASSET_TYPE[scope.row.server_type].type}}
-                  </el-tag>
+                <div class="search">
+                  <el-input v-model="searchdata" placeholder="搜索关键词" class="handle-input mr10"></el-input>
+                  <el-button type="primary" icon="search" @click="searchClick">搜索</el-button>
                 </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="os"
-              label="系统"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="instance_id"
-              label="云主机ID"
-              width="150">
-            </el-table-column>
-            <el-table-column prop='status' label='状态' width="120" aligin="center">
-              <template slot-scope="scope">
-                <div slot="reference" class="name-wrapper" style="text-align: left">
-                  <el-tag :type="ASSET_STATUS[scope.row.status].type">
-                    {{ASSET_STATUS[scope.row.status].status}}
-                  </el-tag>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop='ctime' label='创建时间'  width="200"  sortable="custom">
-              <template slot-scope="scope">
-                <div slot="reference" class="name-wrapper" style="text-align: left; color: rgb(0,0,0)">
-                  <span>{{scope.row.ctime | parseDate}}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作"  width="180" aligin="center">
-              <template slot-scope="scope">
-              <el-button type="primary"  @click="handleEdit(scope.row)"   icon="el-icon-edit" circle></el-button>
-                <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="pagination">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="listQuery.page"
-              :page-sizes="[10, 20, 50,100,500]"
-              :page-size="listQuery.page_size"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="tabletotal">
-            </el-pagination>
-          </div>
-        </div>
+              </div>
+              <el-table
+                ref="multipleTable"
+                :data='HostsData'
+                v-if="HostsData.length>0"
+                max-height="500"
+                border
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+                @sort-change="sortChange"
+              >
+                <el-table-column
+                  type="selection"
+                  width="30">
+                </el-table-column>
+                <el-table-column
+                  prop="hostname"
+                  label="主机名"
+                  sortable="custom"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="wip"
+                  label="外网地址"
+                  sortable="custom"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="nip"
+                  label="内网地址"
+                  sortable="custom"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="idc"
+                  label="机房"
+                  width="100">
+                </el-table-column>
+                <el-table-column prop='server_type' label='类型'  width="80" aligin="center">
+                  <template slot-scope="scope">
+                    <div slot="reference" class="name-wrapper" style="text-align: left">
+                      <el-tag style="color: #000" :color="ASSET_TYPE[scope.row.server_type].color">
+                        {{ASSET_TYPE[scope.row.server_type].type}}
+                      </el-tag>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  prop="os"
+                  label="系统"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="instance_id"
+                  label="云主机ID"
+                  width="100">
+                </el-table-column>
+                <el-table-column prop='status' label='状态' width="60" aligin="center">
+                  <template slot-scope="scope">
+                    <div slot="reference" class="name-wrapper" style="text-align: left">
+                      <el-tag :type="ASSET_STATUS[scope.row.status].type">
+                        {{ASSET_STATUS[scope.row.status].status}}
+                      </el-tag>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column prop='ctime' label='创建时间'  width="150"  sortable="custom">
+                  <template slot-scope="scope">
+                    <div slot="reference" class="name-wrapper" style="text-align: left; color: rgb(0,0,0)">
+                      <span>{{scope.row.ctime | parseDate}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作"  width="100" aligin="center">
+                  <template slot-scope="scope">
+                    <el-button type="primary"  @click="handleEdit(scope.row)"   icon="el-icon-edit" circle></el-button>
+                    <el-button type="danger"  @click="handleDelete(scope.row)"  icon="el-icon-delete" circle></el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="pagination">
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="listQuery.page"
+                  :page-sizes="[10, 20, 50,100,500]"
+                  :page-size="listQuery.page_size"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="tabletotal">
+                </el-pagination>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+
       </div>
       <Hostdialog :dialog="dialog"
                   :rowdata="rowdata"
@@ -130,12 +145,14 @@
 </template>
 
 <script>
+  import {getBusinessUnitTree}  from '../../api/api'
   import Hostdialog from './Hostdialog'
   import { getHosts ,delHost} from '../../api/api'
     export default {
         name: "Hosts",
       created() {
         this.getHostData();
+        this.getTreeData()
 
       },
       components:{
@@ -143,6 +160,11 @@
       },
       data(){
           return{
+            treedata:[],
+            defaultProps: {
+              children: 'children',
+              label: 'label'
+            },
             FormData:{
               hostname:'',
               wip:'',
@@ -177,7 +199,8 @@
               search:'',
               status:'',
               server_type:'',
-              ordering:''
+              ordering:'',
+              business_unit:'',
             },
             ASSET_TYPE: {
               'physical': { 'type': '物理机', 'color': '#c0dbff' },
@@ -195,8 +218,18 @@
           }
       },
       methods:{
+        getTreeData(){
+          getBusinessUnitTree()
+            .then(res=>{
+              console.log(res)
+              this.treedata = res.data;
+            }).catch(function (error) {
+            console.log(error)
+          })
+        },
+
         //  获取主机信息
-          getHostData(){
+        getHostData(){
             getHosts(this.listQuery)
               .then(res=>{
                 this.HostsData = res.data.results;
@@ -349,6 +382,11 @@
           this.listQuery.page_size= val  //每页显示多少条
           this.getHostData()
         },
+
+        handleNodeClick(data) {
+          this.listQuery.business_unit = data.id;
+          this.getHostData()
+        }
       }
     }
 </script>
@@ -363,6 +401,10 @@
   .search {
     float: right;
 
+  }
+  .treeheader {
+
+    padding-bottom: 30px;
   }
   .handle-input {
     width: 300px;

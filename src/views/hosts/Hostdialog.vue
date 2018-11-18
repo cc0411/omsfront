@@ -11,12 +11,15 @@
         <el-form ref="hostform" :model="FormData"  :rules="rules" label-width="80px">
           <el-form-item label="主机名" prop="hostname">
             <el-input v-model="FormData.hostname"></el-input>
+            <span class="error-text" v-if="hosterror">{{hosterror}}</span>
           </el-form-item>
           <el-form-item label="外网地址" prop="wip">
             <el-input v-model="FormData.wip"></el-input>
+            <span class="error-text" v-if="wiperror">{{wiperror}}</span>
           </el-form-item>
           <el-form-item label="内网地址" prop="nip">
             <el-input v-model="FormData.nip"></el-input>
+            <span class="error-text" v-if="niperror">{{niperror}}</span>
           </el-form-item>
           <el-form-item label="设备类型" prop="server_type">
             <el-select v-model="FormData.server_type" placeholder="请选择设备类型">
@@ -79,8 +82,8 @@
 </template>
 
 <script>
-  import {getIdcs,getBusinessUnits,getRoles}  from '../../api/api'
-  import {addHost,updateHost}  from '../../api/api'
+import {addHost,updateHost}  from '../../api/api'
+import {getIdcs,getBusinessUnits,getRoles,getBusinessUnitTree}  from '../../api/api'
 export default {
 name: 'Hostdialog',
   props:{
@@ -90,7 +93,7 @@ name: 'Hostdialog',
   },
   created() {
     this.getRoleData();
-    this.getBusinessUnitsData()
+    this.getBusinessUnitsData();
     this.getIdcData();
   },
   data(){
@@ -108,6 +111,9 @@ name: 'Hostdialog',
         { key: 'instance', name: '云主机' },
       ],
       error:false,
+      hosterror:false,
+      wiperror:false,
+      niperror:false,
       rules:{
         hostname: [
           { required: true, message: '主机名不能为空', trigger: 'blur' }
@@ -131,13 +137,13 @@ name: 'Hostdialog',
               that.error =err.non_field_errors[0];
             }
             if("hostname" in err){
-              that.error=err.hostname[0];
+              that.hostnameerror=err.hostname[0];
             };
             if("wip" in err){
-              that.error=err.wip[0];
+              that.wiperror=err.wip[0];
             };
             if("nip" in err){
-              that.error=err.nip[0];
+              that.niperror=err.nip[0];
             };
           })
         }
@@ -150,7 +156,6 @@ name: 'Hostdialog',
     getRoleData(){
       getRoles()
         .then(res=>{
-          console.log(res)
           this.RoleData = res.data;
 
 
@@ -161,7 +166,6 @@ name: 'Hostdialog',
     getIdcData(){
       getIdcs()
         .then(res=>{
-          console.log(res)
           this.IdcData = res.data;
         }).catch(function (error) {
         console.log(error)
@@ -170,7 +174,6 @@ name: 'Hostdialog',
     getBusinessUnitsData(){
       getBusinessUnits()
         .then(res=>{
-          console.log(res)
           this.BusinessUnitData = res.data;
         }).catch(function (error) {
         console.log(error)
