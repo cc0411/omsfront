@@ -20,7 +20,7 @@
           <el-col :span="20">
             <div class="handle-box">
               <div class="handle-head">
-                <el-button type="danger"  round @click="delAll">批量删除</el-button>
+                <el-button type="danger"  round @click="delAll" :disabled="this.multipleSelection.length === 0||this.disabled">批量删除</el-button>
                 <el-button type="success" round  @click="handleAdd">添加主机</el-button>
                 <el-select v-model="listQuery.status"   @change="changeStatus" placeholder="请选择" class="handle-select mr10">
                   <el-option label="上线" value="online">
@@ -189,10 +189,10 @@
             },
             rowdata:{},
             searchdata:'',
+            disabled:false,
             tabletotal: 0,
             HostsData: [],
             multipleSelection: [],
-            del_list:[],
             listQuery:{
               page:1,
               page_size :10,
@@ -287,25 +287,21 @@
         },
         //批量删除主机
         delAll(){
-          let id_list = [];
-          for (let i=0;i<this.multipleSelection.length;i++){
-            id_list.push(this.multipleSelection[i].id)
-            console.log(id_list)
-          }
-          for( let i=0;i<id_list.length;i++){
-            delHost(id_list[i]).then(response => {
-             console.log('删除成功')
-              this.getHostData()
-            }).catch(error => {
-              this.$message.error('删除失败')
-              console.log(error)
+          this.$confirm("确定要删除吗？").then(()=>{
+            this.multipleSelection.forEach(selectedItem=>{
+              delHost(selectedItem.id).then(response => {
+                this.$message.success('恭喜你，删除成功',)
+                this.multipleSelection=[];
+                this.getHostData()
+              }).catch(error => {
+                this.$message.error('删除失败')
+                console.log(error)
+              })
             })
-          }
-          this.$message({
-            message: '恭喜你，删除成功',
-            type: 'success'
+          }).catch(error => {
+            this.$message.info('点错了')
+            console.log(error)
           })
-          this.multipleSelection=[];
 
         },
 
@@ -319,7 +315,6 @@
               })
               this.getHostData()
             })
-
           }).catch(error => {
             this.$message.info('点错了')
             console.log(error)
@@ -385,6 +380,7 @@
 
         handleNodeClick(data) {
           this.listQuery.business_unit = data.id;
+          console.log(data.id)
           this.getHostData()
         }
       }
