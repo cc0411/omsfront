@@ -40,7 +40,7 @@ name: 'BusinessUnitdialog',
     dialog:Object,
     FormData:Object,
     rowdata:Object,
-    TableData:Object,
+    TableData:Array,
   },
   data(){
     return {

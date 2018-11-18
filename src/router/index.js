@@ -61,7 +61,7 @@ const router = new Router({
     },
     {
       path:'*',
-      name:'404',
+      name:'Nofind',
       component:Nofind
     },
 
