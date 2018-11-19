@@ -44,12 +44,35 @@
                 :data='HostsData'
                 v-if="HostsData.length>0"
                 max-height="500"
-                border
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
                 @sort-change="sortChange"
               >
+                <el-table-column type="expand">
+                  <template  slot-scope="props">
+                <el-form  label-posotion="left"  inline  class="demo-table-expand">
+                  <el-form-item label="CPU">
+                    <span>{{props.row.cpu_info}}</span>
+                  </el-form-item>
+                  <el-form-item label="系统">
+                    <span>{{props.row.os}}</span>
+                  </el-form-item>
+                  <el-form-item label="内存">
+                    <span>{{props.row.memory}}</span>
+                  </el-form-item>
+                  <el-form-item label="硬盘">
+                    <span>{{props.row.disk}}</span>
+                  </el-form-item>
+                  <el-form-item label="SN">
+                    <span>{{props.row.sn}}</span>
+                  </el-form-item>
+                  <el-form-item label="描述">
+                    <span>{{props.row.desc}}</span>
+                  </el-form-item>
+                </el-form>
+                  </template>
+                </el-table-column>
                 <el-table-column
                   type="selection"
                   width="30">
@@ -85,11 +108,6 @@
                       </el-tag>
                     </div>
                   </template>
-                </el-table-column>
-                <el-table-column
-                  prop="os"
-                  label="系统"
-                  width="100">
                 </el-table-column>
                 <el-table-column
                   prop="instance_id"
@@ -162,8 +180,8 @@
           return{
             treedata:[],
             defaultProps: {
-              children: 'children',
-              label: 'label'
+              children: 'parent_level',
+              label: 'name'
             },
             FormData:{
               hostname:'',
@@ -379,9 +397,10 @@
         },
 
         handleNodeClick(data) {
-          this.listQuery.business_unit = data.id;
-          console.log(data.id)
-          this.getHostData()
+
+          // this.listQuery.business_unit = data.id;
+          // console.log(data.id)
+          // this.getHostData()
         }
       }
     }
@@ -406,5 +425,17 @@
     width: 300px;
     display: inline-block;
 
+  }
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
   }
 </style>
