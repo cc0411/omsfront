@@ -60,9 +60,15 @@
             </el-select>
           </el-form-item>
           <el-form-item label="业务线" prop="business_unit">
-            <el-select v-model="FormData.business_unit" placeholder="请选择业务线">
-              <el-option v-for="item in BusinessUnitData" :key="item.name" :value="item.name"></el-option>
-            </el-select>
+            <treeselect
+              :options="BusinessUnitData"
+              v-model="FormData.business_unit"
+              :normalizer="normalizer"
+              placeholder="请选择业务线"
+            />
+            <!--<el-select v-model="FormData.business_unit"  placeholder="请选择">-->
+              <!--<el-option  v-for="item,index in BusinessUnitData"  :key="item.name"  :value="item.name"></el-option>-->
+            <!--</el-select>-->
           </el-form-item>
           <el-form-item label="主机描述" prop="desc">
             <el-input type="textarea" rows="5" v-model="FormData.desc"></el-input>
@@ -82,10 +88,14 @@
 </template>
 
 <script>
+  import Treeselect from '@riophae/vue-treeselect'
+  // import the styles
+  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {addHost,updateHost}  from '../../api/api'
 import {getIdcs,getBusinessUnits,getRoles,getBusinessUnitTree}  from '../../api/api'
 export default {
 name: 'Hostdialog',
+  components: { Treeselect },
   props:{
     dialog:Object,
     FormData:Object,
@@ -98,9 +108,17 @@ name: 'Hostdialog',
   },
   data(){
     return {
+      normalizer(node) {
+        return {
+          id: node.name,
+          label: node.name,
+          children: node.parent_level,
+        }
+      },
       RoleData:{},
       IdcData:{},
-      BusinessUnitData:{},
+      BusinessUnitData:{
+      },
       ASSET_STATUS: [
         { key: 'online', name: '上线' },
         { key: 'offline', name: '下线' },
@@ -157,8 +175,6 @@ name: 'Hostdialog',
       getRoles()
         .then(res=>{
           this.RoleData = res.data;
-
-
         }).catch(function (error) {
         console.log(error)
       })
@@ -175,6 +191,8 @@ name: 'Hostdialog',
       getBusinessUnits()
         .then(res=>{
           this.BusinessUnitData = res.data;
+          console.log(this.BusinessUnitData)
+          console.log(this.BusinessUnitData)
         }).catch(function (error) {
         console.log(error)
       })

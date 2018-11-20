@@ -9,9 +9,15 @@
     >
       <div class="form">
         <el-form ref="businessunitform" :model="FormData"  :rules="rules" label-width="80px">
+
+          <el-form-item label="类目" prop="businessunit_type">
+            <el-select v-model="FormData.businessunit_type" placeholder="请选择类目">
+              <el-option v-for="item in BUSINESSUNIT__TYPE" :key="item.key" :label="item.name" :value="item.key"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="父业务线" prop="parent_unit">
             <el-select v-model="FormData.parent_unit" placeholder="请选择业务线">
-              <el-option v-for="item in TableData" :key="item.name" :value="item.name"></el-option>
+              <el-option v-for="item in TableData" :key="item.name" :value="item.id" :label="item.name"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="业务线名" prop="name">
@@ -44,6 +50,11 @@ name: 'BusinessUnitdialog',
   },
   data(){
     return {
+      BUSINESSUNIT__TYPE: [
+        { key: 1, name: '一级业务线' },
+        { key: 2, name: '二级业务线' },
+        { key: 3, name: '三级业务线' },
+      ],
       error:false,
       rules:{
         name: [

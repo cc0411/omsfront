@@ -105,11 +105,7 @@ export function addBusinessUnit(data) {
   })
 }
 //获取业务线信息
-export const getBusinessUnits = (params) => {
-  if("id"  in params){
-    return  axios.get(`${host}/api/businessunit/`+params.id+'/')
-  }else
-  return axios.get(`${host}/api/businessunit/`,params) }
+export const getBusinessUnits = (params) => {return axios.get(`${host}/api/businessunit/`) }
 
 //获取业务线树
 export const getBusinessUnitTree = () => { return axios.get(`${host}/api/treeassets/`) }

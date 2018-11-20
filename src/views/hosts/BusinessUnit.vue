@@ -14,11 +14,21 @@
           tooltip-effect="dark"
           style="width: 100%"
         >
+          <el-table-column prop='businessunit_type' label='类目' width="150" aligin="center">
+            <template slot-scope="scope">
+              <div slot="reference" class="name-wrapper" style="text-align: left">
+                <el-tag style="color: #000" :color="BusinessUnit_TYPE[scope.row.businessunit_type].color">
+                  {{BusinessUnit_TYPE[scope.row.businessunit_type].type}}
+                </el-tag>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="parent_unit"
+            prop="parent_unit.name"
             label="父业务线名"
             width="200">
           </el-table-column>
+
           <el-table-column
             prop="name"
             label="业务线名"
@@ -62,6 +72,12 @@ export default {
 name: 'BusinessUnit',
 data(){
   return {
+    BusinessUnit_TYPE: {
+      1: { 'type': '一级业务线', 'color': '#c0dbff' },
+      2: { 'type': '二级业务线', 'color': '#19ddff' },
+      3: { 'type': '三级业务线', 'color': '#f06292' },
+
+    },
     TableData:[],
     dialog:{
       show:false,
@@ -71,6 +87,7 @@ data(){
     rowdata:{},
     FormData: {
       parent_unit: '',
+      businessunit_type:'',
       name: '',
       desc: '',
     },
@@ -123,7 +140,8 @@ data(){
       this.FormData ={
         name:row.name,
         parent_unit:row.parent_unit,
-        desc:row.desc
+        desc:row.desc,
+        businessunit_type:row.businessunit_type
       }
     },
     //添加业务线

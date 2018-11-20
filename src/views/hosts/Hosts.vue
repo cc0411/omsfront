@@ -67,6 +67,12 @@
                   <el-form-item label="SN">
                     <span>{{props.row.sn}}</span>
                   </el-form-item>
+                  <el-form-item label="角色">
+                    <span>{{props.row.role}}</span>
+                  </el-form-item>
+                  <el-form-item label="业务线">
+                    <span>{{props.row.business_unit}}</span>
+                  </el-form-item>
                   <el-form-item label="描述">
                     <span>{{props.row.desc}}</span>
                   </el-form-item>
@@ -239,7 +245,6 @@
         getTreeData(){
           getBusinessUnitTree()
             .then(res=>{
-              console.log(res)
               this.treedata = res.data;
             }).catch(function (error) {
             console.log(error)
@@ -397,10 +402,9 @@
         },
 
         handleNodeClick(data) {
-
-          // this.listQuery.business_unit = data.id;
+          this.listQuery.business_unit = data.id;
           // console.log(data.id)
-          // this.getHostData()
+          this.getHostData()
         }
       }
     }
