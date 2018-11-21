@@ -92,7 +92,7 @@ import Idcdialog  from './Idcdialog'
         },
         //删除机房
         handleDelete(row){
-          this.$confirm("确定要删除吗？").then(()=>{
+          this.$confirm("确定要删除吗？该机房下的所有主机将会被删除").then(()=>{
             deleteIdc(row.id).then((res)=>{
               this.$message({
                 message: '恭喜你，删除成功',

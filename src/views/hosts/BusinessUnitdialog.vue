@@ -17,7 +17,7 @@
           </el-form-item>
           <el-form-item label="父业务线" prop="parent_unit">
             <el-select v-model="FormData.parent_unit" placeholder="请选择业务线">
-              <el-option v-for="item in TableData" :key="item.name" :value="item.id" :label="item.name"></el-option>
+              <el-option v-for="item in TableData" :key="item.name" :value="item.name" :label="item.name"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="业务线名" prop="name">

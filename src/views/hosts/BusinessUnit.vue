@@ -24,7 +24,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="parent_unit.name"
+            prop="parent_unit"
             label="父业务线名"
             width="200">
           </el-table-column>
@@ -33,6 +33,14 @@
             prop="name"
             label="业务线名"
             width="200">
+          </el-table-column>
+          <el-table-column
+            prop="parent_level"
+            label="二级业务线名"
+            width="200">
+            <template slot-scope="scope">
+              <span v-if="scope.row.parent_level.length>0"  v-for="item in  scope.row.parent_level">{{item.name}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop='ctime' label='创建时间'  width="200">
             <template slot-scope="scope">
@@ -114,7 +122,7 @@ data(){
     },
     //删除业务线
     handleDelete(row){
-      this.$confirm("确定要删除吗？").then(()=>{
+      this.$confirm("确定要删除吗？该业务线下的所有主机将会被删除").then(()=>{
         deleteBusinessUnit(row.id).then((res)=>{
           this.$message({
             message: '恭喜你，删除成功',
